@@ -1,0 +1,36 @@
+# Football Match Simulator
+
+This repository contains JavaScript code for simulating a football match. The simulator is designed to provide an interactive experience where users can input team details, strategies, and other parameters to simulate a match outcome.
+
+## Features
+
+- **Team Configuration**: Users can configure team details such as player skills, formation, and tactics.
+- **Match Simulation**: Simulate matches based on configured team parameters and various match conditions.
+- **Real-time Updates**: Display real-time updates during the match simulation, including goals, fouls, substitutions, etc.
+- **Match Statistics**: Provide detailed statistics at the end of each match, including possession, shots on target, fouls, etc.
+- **Customizable**: Easily customizable parameters to tweak match dynamics and realism.
+
+## Installation
+
+To run the football match simulator, follow these steps:
+
+1. Clone this repository to your local machine:
+
+   ```
+   git clone https://github.com/Giacomo-Cattani/FootballEngine.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```
+   cd FootballEngine
+   ```
+
+3. Now you have the code which simulate football matches
+
+## Usage
+
+1. Configure Team Details: Input team details such as player skills, formation, and tactics.
+2. Start Match: Initiate the match simulation to observe the outcome.
+3. View Real-time Updates: Monitor the match progress with real-time updates displayed on the interface.
+4. Analyze Statistics: Review match statistics at the end of the simulation to analyze performance.

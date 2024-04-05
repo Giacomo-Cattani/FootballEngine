@@ -26,8 +26,15 @@ To run the football match simulator, follow these steps:
    cd FootballEngine
    ```
 
-3. Now you have the code which simulate football matches
+3. Install and import the module:
 
+   ```
+   npm i FootballEngine
+   ```
+   
+   ```
+   import engine from FootballEngine
+   ```
 ## Usage
 
 1. Configure Team Details: Input team details such as player skills, formation, and tactics.

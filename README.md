@@ -2,6 +2,8 @@
 
 This repository contains JavaScript code for simulating a football match. The simulator is designed to provide an experience where users can input teams amd field details, and other parameters to simulate a match outcome.
 
+[Contribution guidelines for this project](docs/CONTRIBUTING.md)
+
 ## Features
 
 - **Team Configuration**: Users can configure team details such as player skills, formation, and tactics.

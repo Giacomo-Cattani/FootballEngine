@@ -15,12 +15,10 @@ This function has the jobs to initialize a match, so you need to pass the two te
 ### Return Value
 
 This function return a JSON of the details of the match likes:
-    - `matchID`,
-    - `kickOffTeam`,
-    - `pitchSize`, ...
+    - `matchID`
+    - `kickOffTeam`
+    - `pitchSize`
 
 ### Example Usage
 
-```
-let initJSON = await initGame(t1location, t2location, plocation)
-```
+> let initJSON = await initGame(t1location, t2location, plocation)

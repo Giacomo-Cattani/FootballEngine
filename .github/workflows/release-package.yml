@@ -1,4 +1,4 @@
-name: Node.js Package
+name: Football Engine Release Package
 
 on:
   release:

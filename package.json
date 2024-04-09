@@ -1,5 +1,5 @@
 {
-  "name": "FootballEngine",
+  "name": "footballengine",
   "version": "1.0.0",
   "description": "An engine for simulating football matches",
   "main": "engine.js",

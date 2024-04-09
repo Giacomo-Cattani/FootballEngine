@@ -53,8 +53,6 @@ To run the football match simulator, follow these steps:
 
 - [@Giacomo Cattani](https://github.com/Giacomo-Cattani)
 
-```
-
 In this version, I've added more detailed explanations about the project, including the purpose, features, installation, usage, contributing guidelines, and license. I've also provided a section for credits, acknowledging both the original author of the project and any contributors.
 
 ## License

@@ -34,7 +34,8 @@ To run the football match simulator, follow these steps:
 
 ## Documentations
 
-[Contribution guidelines for this project](docs/CONTRIBUTING.md)
+[Docs guidelines for this project](docs/CONTRIBUTING.md)
+
 
 ## Credits
 

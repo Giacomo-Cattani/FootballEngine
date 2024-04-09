@@ -46,8 +46,8 @@ To run the football match simulator, follow these steps:
 
 ### Original Author
 
-- [Aiden Gallagher](https://github.com/GallagherAiden)
-- (https://github.com/GallagherAiden/footballSimulationEngine)
+- [@Aiden Gallagher](https://github.com/GallagherAiden)
+- [@Original Project]https://github.com/GallagherAiden/footballSimulationEngine
 
 ### Contributors
 

@@ -27,9 +27,6 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Initializzation dependencies
-        run: npm init
-
       - name: Install dependencies
         run: npm install
 
@@ -37,5 +34,5 @@ jobs:
         run: echo "//registry.npmjs.org/:_authToken=\${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       - run: npm ci
-      - run: npm publish --access public
+      - run: npm publish
       

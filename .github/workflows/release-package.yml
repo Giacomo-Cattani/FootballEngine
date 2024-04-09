@@ -32,9 +32,7 @@ jobs:
 
       - name: Authenticate with npm registry
         run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          
+
       - run: npm ci
       - run: npm publish --access public
       

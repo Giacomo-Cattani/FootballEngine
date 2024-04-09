@@ -1,6 +1,6 @@
 {
   "name": "football-engine",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An engine for simulating football matches",
   "main": "engine.js",
   "type": "module",
@@ -27,7 +27,13 @@
   ],
   "author": "Giacomo Cattani",
   "license": "ISC",
-  "repository": "https://github.com/Giacomo-Cattani/FootballEngine",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Giacomo-Cattani/FootballEngine.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "engines": {
     "node": ">=7.6.0"
   },

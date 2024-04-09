@@ -17,18 +17,24 @@ jobs:
   publish-gpr:
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 16
-          registry-url: https://npm.pkg.github.com/
-      - run: echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Authenticate with npm registry
+        run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
       - run: npm ci
       - run: npm publish --access public
-
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      

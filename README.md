@@ -1,39 +1,29 @@
 # Football Match Simulator
 
-This repository contains JavaScript code for simulating a football match. The simulator is designed to provide an interactive experience where users can input team details, strategies, and other parameters to simulate a match outcome.
+This repository contains JavaScript code for simulating a football match. The simulator is designed to provide an experience where users can input teams amd field details, and other parameters to simulate a match outcome.
 
 ## Features
 
 - **Team Configuration**: Users can configure team details such as player skills, formation, and tactics.
 - **Match Simulation**: Simulate matches based on configured team parameters and various match conditions.
 - **Real-time Updates**: Display real-time updates during the match simulation, including goals, fouls, substitutions, etc.
-- **Match Statistics**: Provide detailed statistics at the end of each match, including possession, shots on target, fouls, etc.
+- **Match Statistics**: Provide detailed statistics at the end of each match, including shots on target, fouls, red and yellow card etc.
 - **Customizable**: Easily customizable parameters to tweak match dynamics and realism.
 
 ## Installation
 
+This project is available on npm so for install that you only need to:
 To run the football match simulator, follow these steps:
 
-1. Clone this repository to your local machine:
+1. Install the module:
 
    ```
-   git clone https://github.com/Giacomo-Cattani/FootballEngine.git
+   npm i football-engine
    ```
 
-2. Navigate to the project directory:
-
+2. Import the module:
    ```
-   cd FootballEngine
-   ```
-
-3. Install and import the module:
-
-   ```
-   npm i FootballEngine
-   ```
-   
-   ```
-   import engine from FootballEngine
+   import engine from football-engine
    ```
 ## Usage
 

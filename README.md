@@ -23,7 +23,7 @@ To run the football match simulator, follow these steps:
 
 2. Import the module:
    ```
-   import engine from football-engine
+   import engine from "football-engine"
    ```
 ## Usage
 

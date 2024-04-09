@@ -27,6 +27,7 @@
   ],
   "author": "Giacomo Cattani",
   "license": "ISC",
+  "repository": {"url": "https://github.com/Giacomo-Cattani/FootballEngine"},
   "engines": {
     "node": ">=7.6.0"
   },

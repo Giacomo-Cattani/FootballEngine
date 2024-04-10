@@ -22,3 +22,15 @@ This function return a JSON of the details of the match likes:
 ### Example Usage
 
 > let initJSON = await initGame(t1location, t2location, plocation)
+=======
+
+- `matchID`,
+- `kickOffTeam`,
+- `pitchSize`, ...
+
+### Example Usage
+
+```
+let initJSON = await initGame(t1location, t2location, plocation)
+```
+>>>>>>> 8c80b15b0306cfe174cda9006c27bba2abfe237b

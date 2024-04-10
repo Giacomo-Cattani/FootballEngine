@@ -1,4 +1,32 @@
-import { common } from '../lib/common.js'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/actions.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/actions.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { common } from '../lib/common.js'
 import { setPositions } from '../lib/setPositions.js'
 /**
  * Functions for do an iteration of a football match
@@ -35,7 +63,7 @@ function topTeamPlayerHasBall(matchDetails, player, team, opposition) {
   let {
     position, currentPOS, skill
   } = player
-  if (position === 'GK' && oppositionNearPlayer(playerInformation, 10, 25)) return [0, 0, 10, 0, 0, 0, 0, 10, 0, 40, 40]
+  if (position === 'GK' &amp;&amp; oppositionNearPlayer(playerInformation, 10, 25)) return [0, 0, 10, 0, 0, 0, 0, 10, 0, 40, 40]
   else if (position === 'GK') return [0, 0, 50, 0, 0, 0, 0, 10, 0, 20, 20]
   else if (onBottomCornerBoundary(currentPOS, pitchWidth, pitchHeight)) return [0, 0, 20, 80, 0, 0, 0, 0, 0, 0, 0]
   else if (checkPositionInBottomPenaltyBox(currentPOS, pitchWidth, pitchHeight)) {
@@ -98,7 +126,7 @@ function bottomTeamPlayerHasBall(matchDetails, player, team, opposition) {
   let {
     position, currentPOS, skill
   } = player
-  if (position === 'GK' && oppositionNearPlayer(playerInformation, 10, 25)) return [0, 0, 10, 0, 0, 0, 0, 10, 0, 40, 40]
+  if (position === 'GK' &amp;&amp; oppositionNearPlayer(playerInformation, 10, 25)) return [0, 0, 10, 0, 0, 0, 0, 10, 0, 40, 40]
   else if (position === 'GK') return [0, 0, 50, 0, 0, 0, 0, 10, 0, 20, 20]
   else if (onTopCornerBoundary(currentPOS, pitchWidth)) return [0, 0, 20, 80, 0, 0, 0, 0, 0, 0, 0]
   else if (checkPositionInTopPenaltyBox(currentPOS, pitchWidth, pitchHeight)) {
@@ -159,24 +187,24 @@ function bottomTeamPlayerHasBallInTopPenaltyBox(matchDetails, player, team, oppo
 
 function oppositionNearPlayer(oppositionPlayer, spaceX, spaceY) {
   let oppositionProximity = [Math.abs(oppositionPlayer.proxPOS[0]), Math.abs(oppositionPlayer.proxPOS[1])]
-  if (oppositionProximity[0] < spaceX && oppositionProximity[1] < spaceY) return true
+  if (oppositionProximity[0] &lt; spaceX &amp;&amp; oppositionProximity[1] &lt; spaceY) return true
   return false
 }
 
 function checkTeamMateSpaceClose(tmateProximity, lowX, highX, lowY, highY) {
-  if (common.isBetween(tmateProximity[0], lowX, highX) && common.isBetween(tmateProximity[1], lowY, highY)) return true
+  if (common.isBetween(tmateProximity[0], lowX, highX) &amp;&amp; common.isBetween(tmateProximity[1], lowY, highY)) return true
   return false
 }
 
 function checkOppositionAhead(closePlayerPosition, currentPOS) {
   let closePlyX = common.isBetween(closePlayerPosition[0], currentPOS[0] - 4, currentPOS[0] + 4)
-  if (closePlyX && closePlayerPosition[1] < currentPOS[1]) return true
+  if (closePlyX &amp;&amp; closePlayerPosition[1] &lt; currentPOS[1]) return true
   return false
 }
 
 function checkOppositionBelow(closePlayerPosition, currentPOS) {
   let closePlyX = common.isBetween(closePlayerPosition[0], currentPOS[0] - 4, currentPOS[0] + 4)
-  if (closePlyX && closePlayerPosition[1] > currentPOS[1]) return true
+  if (closePlyX &amp;&amp; closePlayerPosition[1] > currentPOS[1]) return true
   return false
 }
 
@@ -186,11 +214,11 @@ function playerDoesNotHaveBall(player, ballX, ballY, matchDetails) {
     position, currentPOS, originPOS
   } = player
   if (position === 'GK') return [0, 0, 0, 0, 0, 0, 0, 60, 40, 0, 0]
-  else if (common.isBetween(ballX, -20, 20) && common.isBetween(ballY, -20, 20)) {
+  else if (common.isBetween(ballX, -20, 20) &amp;&amp; common.isBetween(ballY, -20, 20)) {
     return noBallNotGK2CloseBall(matchDetails, currentPOS, originPOS, pitchWidth, pitchHeight)
-  } else if (common.isBetween(ballX, -40, 40) && common.isBetween(ballY, -40, 40)) {
+  } else if (common.isBetween(ballX, -40, 40) &amp;&amp; common.isBetween(ballY, -40, 40)) {
     return noBallNotGK4CloseBall(matchDetails, currentPOS, originPOS, pitchWidth, pitchHeight)
-  } else if (common.isBetween(ballX, -80, 80) && common.isBetween(ballY, -80, 80)) {
+  } else if (common.isBetween(ballX, -80, 80) &amp;&amp; common.isBetween(ballY, -80, 80)) {
     if (matchDetails.ball.withPlayer === false) return [0, 0, 0, 0, 0, 0, 0, 60, 40, 0, 0]
     return [0, 0, 0, 0, 0, 40, 0, 30, 30, 0, 0]
   }
@@ -239,38 +267,38 @@ function noBallNotGK2CloseBallBottomTeam(matchDetails, currentPOS, pitchWidth, p
 function checkPositionInBottomPenaltyBox(position, pitchWidth, pitchHeight) {
   let yPos = common.isBetween(position[0], (pitchWidth / 4) - 5, pitchWidth - (pitchWidth / 4) + 5)
   let xPos = common.isBetween(position[1], pitchHeight - (pitchHeight / 6) + 5, pitchHeight)
-  if (yPos && xPos) return true
+  if (yPos &amp;&amp; xPos) return true
   return false
 }
 
 function checkPositionInBottomPenaltyBoxClose(position, pitchWidth, pitchHeight) {
   let yPos = common.isBetween(position[0], (pitchWidth / 3) - 5, pitchWidth - (pitchWidth / 3) + 5)
   let xPos = common.isBetween(position[1], (pitchHeight - (pitchHeight / 12) + 5), pitchHeight)
-  if (yPos && xPos) return true
+  if (yPos &amp;&amp; xPos) return true
   return false
 }
 
 function checkPositionInTopPenaltyBox(position, pitchWidth, pitchHeight) {
   let xPos = common.isBetween(position[0], (pitchWidth / 4) - 5, pitchWidth - (pitchWidth / 4) + 5)
   let yPos = common.isBetween(position[1], 0, (pitchHeight / 6) - 5)
-  if (yPos && xPos) return true
+  if (yPos &amp;&amp; xPos) return true
   return false
 }
 
 function checkPositionInTopPenaltyBoxClose(position, pitchWidth, pitchHeight) {
   let xPos = common.isBetween(position[0], (pitchWidth / 3) - 5, pitchWidth - (pitchWidth / 3) + 5)
   let yPos = common.isBetween(position[1], 0, (pitchHeight / 12) - 5)
-  if (yPos && xPos) return true
+  if (yPos &amp;&amp; xPos) return true
   return false
 }
 
 function onBottomCornerBoundary(position, pitchWidth, pitchHeight) {
-  if (position[1] == pitchHeight && (position[0] == 0 || position[0] == pitchWidth)) return true
+  if (position[1] == pitchHeight &amp;&amp; (position[0] == 0 || position[0] == pitchWidth)) return true
   return false
 }
 
 function onTopCornerBoundary(position, pitchWidth) {
-  if (position[1] == 0 && (position[0] == 0 || position[0] == pitchWidth)) return true
+  if (position[1] == 0 &amp;&amp; (position[0] == 0 || position[0] == pitchWidth)) return true
   return false
 }
 
@@ -493,3 +521,26 @@ export const actions = {
   wasFoul,
   foulIntensity
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#initiateGame">initiateGame</a></li><li><a href="global.html#playIteration">playIteration</a></li><li><a href="global.html#selectAction">selectAction</a></li><li><a href="global.html#startSecondHalf">startSecondHalf</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Apr 09 2024 22:11:58 GMT+0200 (Ora legale dell’Europa centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

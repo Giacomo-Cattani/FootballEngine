@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/setVariables.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/setVariables.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { common } from '../lib/common.js'
+
+/**
+ * Resets the player positions in the match details object.
+ * @function
+ * @param {Object} matchDetails - The match details object containing the player positions.
+ */
+function resetPlayerPositions(matchDetails) {
+  for (let player of matchDetails.kickOffTeam.players) {
+    if (player.currentPOS[0] != 'NP') {
+      player.currentPOS = player.originPOS.map(x => x)
+      player.intentPOS = player.originPOS.map(x => x)
+    }
+  }
+  for (let player of matchDetails.secondTeam.players) {
+    if (player.currentPOS[0] != 'NP') {
+      player.currentPOS = player.originPOS.map(x => x)
+      player.intentPOS = player.originPOS.map(x => x)
+    }
+  }
+}
+
+/**
+ * Sets game variables for a given team.
+ * @function
+ * @param {Object} team - The team object.
+ * @returns {Object} The updated team object with game variables set.
+ */
+function setGameVariables(team) {
+  team.players.forEach(player => {
+    player.playerID = common.getRandomNumber(1000000000000, 99999999999999999)
+    player.originPOS = player.currentPOS.slice()
+    player.intentPOS = player.currentPOS.slice()
+    player.action = `none`
+    player.offside = false
+    player.hasBall = false
+    player.stats = {
+      'goals': 0,
+      'shots': {
+        'total': 0,
+        'on': 0,
+        'off': 0
+      },
+      'cards': {
+        'yellow': 0,
+        'red': 0
+      },
+      'passes': {
+        'total': 0,
+        'on': 0,
+        'off': 0
+      },
+      'tackles': {
+        'total': 0,
+        'on': 0,
+        'off': 0,
+        'fouls': 0
+      }
+    }
+    if (player.position == 'GK') player.stats.saves = 0
+  })
+  team.intent = `none`
+  team.teamID = common.getRandomNumber(1000000000000, 99999999999999999)
+  return team
+}
+
+/**
+ * Decides the outcome of a knockout event in a football match.
+ * @function
+ * @param {Object} team1 - The first team participating in the match.
+ * @param {Object} matchDetails - The details of the match.
+ * @returns {Object} The updated team1 object after the knockout event.
+ */
+function koDecider(team1, matchDetails) {
+  const playerWithBall = common.getRandomNumber(9, 10)
+  matchDetails.ball.withPlayer = true
+  matchDetails.ball.Player = team1.players[playerWithBall].playerID
+  matchDetails.ball.withTeam = team1.teamID
+  team1.intent = `attack`
+  team1.players[playerWithBall].currentPOS = matchDetails.ball.position.map(x => x)
+  team1.players[playerWithBall].intentPOS = matchDetails.ball.position.map(x => x)
+  team1.players[playerWithBall].currentPOS.pop()
+  team1.players[playerWithBall].intentPOS.pop()
+  team1.players[playerWithBall].hasBall = true
+  matchDetails.ball.lastTouch.playerName = team1.players[playerWithBall].name
+  matchDetails.ball.lastTouch.playerID = team1.players[playerWithBall].playerID
+  matchDetails.ball.lastTouch.teamID = team1.teamID
+  matchDetails.ball.ballOverIterations = []
+  let waitingPlayer = playerWithBall == 9 ? 10 : 9
+  team1.players[waitingPlayer].currentPOS = [matchDetails.ball.position[0] + 20, matchDetails.ball.position[1]]
+  team1.players[waitingPlayer].intentPOS = [matchDetails.ball.position[0] + 20, matchDetails.ball.position[1]]
+  return team1
+}
+
+/**
+ * Populates the match details object with the provided team and pitch details.
+ * @function
+ * @param {string} team1 - The name of the first team.
+ * @param {string} team2 - The name of the second team.
+ * @param {Object} pitchDetails - The details of the pitch.
+ * @returns {Object} The populated match details object.
+ */
+function populateMatchDetails(team1, team2, pitchDetails) {
+  return {
+    matchID: common.getRandomNumber(1000000000000, 99999999999999999),
+    kickOffTeam: team1,
+    secondTeam: team2,
+    pitchSize: [pitchDetails.pitchWidth, pitchDetails.pitchHeight, pitchDetails.goalWidth],
+    ball: {
+      position: [pitchDetails.pitchWidth / 2, pitchDetails.pitchHeight / 2, 0],
+      withPlayer: true,
+      Player: ``,
+      withTeam: ``,
+      direction: `south`,
+      ballOverIterations: [],
+      lastTouch: {
+        playerName: ``,
+        playerID: ``,
+        teamID: ``
+      }
+    },
+    half: 1,
+    kickOffTeamStatistics: {
+      goals: 0,
+      shots: {
+        'total': 0,
+        'on': 0,
+        'off': 0
+      },
+      corners: 0,
+      freekicks: 0,
+      penalties: 0,
+      fouls: 0
+    },
+    secondTeamStatistics: {
+      goals: 0,
+      shots: {
+        'total': 0,
+        'on': 0,
+        'off': 0
+      },
+      corners: 0,
+      freekicks: 0,
+      penalties: 0,
+      fouls: 0
+    },
+    iterationLog: []
+  }
+}
+
+
+/**
+ * @module setVariables
+ * 
+ * @requires `common`
+ * 
+ * @function `resetPlayerPositions` - Resets the positions of the players.
+ * @function `setGameVariables` - Sets the game variables.
+ * @function `koDecider` - Decides the knockout winner.
+ * @function `populateMatchDetails` - Populates the match details.
+ */
+export const setVariables = {
+  resetPlayerPositions,
+  setGameVariables,
+  koDecider,
+  populateMatchDetails
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#%2560completeSlide%2560-Completestheslidingactionofaplayer.">`completeSlide` - Completes the sliding action of a player.</a></li><li><a href="global.html#%2560foulIntensity%2560-Calculatestheintensityofafoulactionperformedbythecurrentplayer.">`foulIntensity` - Calculates the intensity of a foul action performed by the current player.</a></li><li><a href="global.html#%2560getBottomKickedPosition%2560-Functiontogetthebottomkickedposition.">`getBottomKickedPosition` - Function to get the bottom kicked position.</a></li><li><a href="global.html#%2560populateMatchDetails%2560-Populatesthematchdetails.">`populateMatchDetails` - Populates the match details.</a></li><li><a href="global.html#%2560removeBallFromAllPlayers%2560-Removestheballfromallplayers.">`removeBallFromAllPlayers` - Removes the ball from all players.</a></li><li><a href="global.html#%2560setBottomFreekick%2560-Setsthepositionofthebottomfreekick.">`setBottomFreekick` - Sets the position of the bottom free kick.</a></li><li><a href="global.html#%2560setRightSecondTeamThrowIn%2560-Setsthepositionsfortherightthrow-inofthesecondteam.">`setRightSecondTeamThrowIn` - Sets the positions for the right throw-in of the second team.</a></li><li><a href="global.html#%2560validatePlayerPositions%2560-Validatestheplayerpositions.">`validatePlayerPositions` - Validates the player positions.</a></li><li><a href="global.html#aTimesbDividedByC">aTimesbDividedByC</a></li><li><a href="global.html#attackLeftThrowInPlayerPosition">attackLeftThrowInPlayerPosition</a></li><li><a href="global.html#attackRightThrowInPlayerPosition">attackRightThrowInPlayerPosition</a></li><li><a href="global.html#ballCrossed">ballCrossed</a></li><li><a href="global.html#ballKicked">ballKicked</a></li><li><a href="global.html#ballMoved">ballMoved</a></li><li><a href="global.html#ballPassed">ballPassed</a></li><li><a href="global.html#ballThrowInPosition">ballThrowInPosition</a></li><li><a href="global.html#bottomTeamPlayerHasBall">bottomTeamPlayerHasBall</a></li><li><a href="global.html#bottomTeamPlayerHasBallInMiddle">bottomTeamPlayerHasBallInMiddle</a></li><li><a href="global.html#bottomTeamPlayerHasBallInTopPenaltyBox">bottomTeamPlayerHasBallInTopPenaltyBox</a></li><li><a href="global.html#calcBallMovementOverTime">calcBallMovementOverTime</a></li><li><a href="global.html#calcRetentionScore">calcRetentionScore</a></li><li><a href="global.html#calcTackleScore">calcTackleScore</a></li><li><a href="global.html#calculatePower">calculatePower</a></li><li><a href="global.html#checkGoalScored">checkGoalScored</a></li><li><a href="global.html#checkOffside">checkOffside</a></li><li><a href="global.html#checkOppositionAhead">checkOppositionAhead</a></li><li><a href="global.html#checkOppositionBelow">checkOppositionBelow</a></li><li><a href="global.html#checkPositionInBottomPenaltyBox">checkPositionInBottomPenaltyBox</a></li><li><a href="global.html#checkPositionInBottomPenaltyBoxClose">checkPositionInBottomPenaltyBoxClose</a></li><li><a href="global.html#checkPositionInTopPenaltyBox">checkPositionInTopPenaltyBox</a></li><li><a href="global.html#checkPositionInTopPenaltyBoxClose">checkPositionInTopPenaltyBoxClose</a></li><li><a href="global.html#checkProvidedAction">checkProvidedAction</a></li><li><a href="global.html#checkTeamMateSpaceClose">checkTeamMateSpaceClose</a></li><li><a href="global.html#closestPlayerActionBallX">closestPlayerActionBallX</a></li><li><a href="global.html#closestPlayerActionBallY">closestPlayerActionBallY</a></li><li><a href="global.html#closestPlayerToBall">closestPlayerToBall</a></li><li><a href="global.html#closestPlayerToPosition">closestPlayerToPosition</a></li><li><a href="global.html#completeMovement">completeMovement</a></li><li><a href="global.html#completeSlide">completeSlide</a></li><li><a href="global.html#completeTackleWhenCloseNoBall">completeTackleWhenCloseNoBall</a></li><li><a href="global.html#decideMovement">decideMovement</a></li><li><a href="global.html#defenceLeftThrowInPlayerPosition">defenceLeftThrowInPlayerPosition</a></li><li><a href="global.html#defenceRightThrowInPlayerPosition">defenceRightThrowInPlayerPosition</a></li><li><a href="global.html#findPossActions">findPossActions</a></li><li><a href="global.html#formationCheck">formationCheck</a></li><li><a href="global.html#foulIntensity">foulIntensity</a></li><li><a href="global.html#getBallDirection">getBallDirection</a></li><li><a href="global.html#getBallTrajectory">getBallTrajectory</a></li><li><a href="global.html#getBottomKickedPosition">getBottomKickedPosition</a></li><li><a href="global.html#getBottomMostPlayer">getBottomMostPlayer</a></li><li><a href="global.html#getClosestTrajPosition">getClosestTrajPosition</a></li><li><a href="global.html#getInterceptMovement">getInterceptMovement</a></li><li><a href="global.html#getInterceptPosition">getInterceptPosition</a></li><li><a href="global.html#getInterceptTrajectory">getInterceptTrajectory</a></li><li><a href="global.html#getMovement">getMovement</a></li><li><a href="global.html#getPlayersInDistance">getPlayersInDistance</a></li><li><a href="global.html#getRandomBottomPenaltyPosition">getRandomBottomPenaltyPosition</a></li><li><a href="global.html#getRandomNumber">getRandomNumber</a></li><li><a href="global.html#getRandomTopPenaltyPosition">getRandomTopPenaltyPosition</a></li><li><a href="global.html#getRunMovement">getRunMovement</a></li><li><a href="global.html#getSprintMovement">getSprintMovement</a></li><li><a href="global.html#getTackleMovement">getTackleMovement</a></li><li><a href="global.html#getTargetPlayer">getTargetPlayer</a></li><li><a href="global.html#getTopKickedPosition">getTopKickedPosition</a></li><li><a href="global.html#getTopMostPlayer">getTopMostPlayer</a></li><li><a href="global.html#handleBallPlayerActions">handleBallPlayerActions</a></li><li><a href="global.html#inBottomPenalty">inBottomPenalty</a></li><li><a href="global.html#inTopPenalty">inTopPenalty</a></li><li><a href="global.html#initiateGame">initiateGame</a></li><li><a href="global.html#isBetween">isBetween</a></li><li><a href="global.html#isEven">isEven</a></li><li><a href="global.html#isInjured">isInjured</a></li><li><a href="global.html#isOdd">isOdd</a></li><li><a href="global.html#keepInBoundaries">keepInBoundaries</a></li><li><a href="global.html#koDecider">koDecider</a></li><li><a href="global.html#matchInjury">matchInjury</a></li><li><a href="global.html#mergeArrays">mergeArrays</a></li><li><a href="global.html#moveBall">moveBall</a></li><li><a href="global.html#moveTowardsBall">moveTowardsBall</a></li><li><a href="global.html#newKickedPosition">newKickedPosition</a></li><li><a href="global.html#noBallNotGK2CloseBall">noBallNotGK2CloseBall</a></li><li><a href="global.html#noBallNotGK2CloseBallBottomTeam">noBallNotGK2CloseBallBottomTeam</a></li><li><a href="global.html#noBallNotGK4CloseBall">noBallNotGK4CloseBall</a></li><li><a href="global.html#noBallNotGK4CloseBallBottomTeam">noBallNotGK4CloseBallBottomTeam</a></li><li><a href="global.html#offsideYPOS">offsideYPOS</a></li><li><a href="global.html#onTopCornerBoundary">onTopCornerBoundary</a></li><li><a href="global.html#oppositionNearPlayer">oppositionNearPlayer</a></li><li><a href="global.html#penaltyTaken">penaltyTaken</a></li><li><a href="global.html#playIteration">playIteration</a></li><li><a href="global.html#playerDoesNotHaveBall">playerDoesNotHaveBall</a></li><li><a href="global.html#populateActionsJSON">populateActionsJSON</a></li><li><a href="global.html#populateMatchDetails">populateMatchDetails</a></li><li><a href="global.html#populatePossibleActions">populatePossibleActions</a></li><li><a href="global.html#readFile">readFile</a></li><li><a href="global.html#removeBallFromAllPlayers">removeBallFromAllPlayers</a></li><li><a href="global.html#resetPlayerPositions">resetPlayerPositions</a></li><li><a href="global.html#resolveBallMovement">resolveBallMovement</a></li><li><a href="global.html#resolveDeflection">resolveDeflection</a></li><li><a href="global.html#resolveSlide">resolveSlide</a></li><li><a href="global.html#resolveTackle">resolveTackle</a></li><li><a href="global.html#round">round</a></li><li><a href="global.html#selectAction">selectAction</a></li><li><a href="global.html#setAttackRelativePos">setAttackRelativePos</a></li><li><a href="global.html#setBPlayer">setBPlayer</a></li><li><a href="global.html#setBallMovementMatchDetails">setBallMovementMatchDetails</a></li><li><a href="global.html#setBallSpecificCornerValue">setBallSpecificCornerValue</a></li><li><a href="global.html#setBallSpecificGoalKickValue">setBallSpecificGoalKickValue</a></li><li><a href="global.html#setBallSpecificGoalScoreValue">setBallSpecificGoalScoreValue</a></li><li><a href="global.html#setBallSpecificPenaltyValue">setBallSpecificPenaltyValue</a></li><li><a href="global.html#setBottomFreekick">setBottomFreekick</a></li><li><a href="global.html#setBottomGoalKick">setBottomGoalKick</a></li><li><a href="global.html#setBottomHalfwayToTopQtrYPos">setBottomHalfwayToTopQtrYPos</a></li><li><a href="global.html#setBottomLeftCornerPositions">setBottomLeftCornerPositions</a></li><li><a href="global.html#setBottomLowerFinalQtrBylinePos">setBottomLowerFinalQtrBylinePos</a></li><li><a href="global.html#setBottomOneHundredToHalfwayYPos">setBottomOneHundredToHalfwayYPos</a></li><li><a href="global.html#setBottomOneHundredYPos">setBottomOneHundredYPos</a></li><li><a href="global.html#setBottomPenalty">setBottomPenalty</a></li><li><a href="global.html#setBottomRightCornerPositions">setBottomRightCornerPositions</a></li><li><a href="global.html#setBottomUpperQtrCentreYPos">setBottomUpperQtrCentreYPos</a></li><li><a href="global.html#setClosePlayerTakesBall">setClosePlayerTakesBall</a></li><li><a href="global.html#setDefenceRelativePos">setDefenceRelativePos</a></li><li><a href="global.html#setDeflectionDirectionPos">setDeflectionDirectionPos</a></li><li><a href="global.html#setDeflectionPlayerHasBall">setDeflectionPlayerHasBall</a></li><li><a href="global.html#setDeflectionPlayerOffside">setDeflectionPlayerOffside</a></li><li><a href="global.html#setFailedTackle">setFailedTackle</a></li><li><a href="global.html#setFoul">setFoul</a></li><li><a href="global.html#setGameVariables">setGameVariables</a></li><li><a href="global.html#setGoalieHasBall">setGoalieHasBall</a></li><li><a href="global.html#setInjury">setInjury</a></li><li><a href="global.html#setIntentPosition">setIntentPosition</a></li><li><a href="global.html#setKickOffTeamGoalScored">setKickOffTeamGoalScored</a></li><li><a href="global.html#setLeftKickOffTeamThrowIn">setLeftKickOffTeamThrowIn</a></li><li><a href="global.html#setLeftSecondTeamThrowIn">setLeftSecondTeamThrowIn</a></li><li><a href="global.html#setLooseintentPOS">setLooseintentPOS</a></li><li><a href="global.html#setNewRelativeBottomYPOS">setNewRelativeBottomYPOS</a></li><li><a href="global.html#setNewRelativeTopYPOS">setNewRelativeTopYPOS</a></li><li><a href="global.html#setPlayerPenaltyPositions">setPlayerPenaltyPositions</a></li><li><a href="global.html#setPlayerPositions">setPlayerPositions</a></li><li><a href="global.html#setPostTackleBall">setPostTackleBall</a></li><li><a href="global.html#setPostTacklePosition">setPostTacklePosition</a></li><li><a href="global.html#setRightKickOffTeamThrowIn">setRightKickOffTeamThrowIn</a></li><li><a href="global.html#setRightSecondTeamThrowIn">setRightSecondTeamThrowIn</a></li><li><a href="global.html#setSecondTeamGoalScored">setSecondTeamGoalScored</a></li><li><a href="global.html#setSetpieceKickOffTeam">setSetpieceKickOffTeam</a></li><li><a href="global.html#setSetpieceSecondTeam">setSetpieceSecondTeam</a></li><li><a href="global.html#setSuccessTackle">setSuccessTackle</a></li><li><a href="global.html#setTargetPlyPos">setTargetPlyPos</a></li><li><a href="global.html#setTopBottomQtrCentreYPos">setTopBottomQtrCentreYPos</a></li><li><a href="global.html#setTopFreekick">setTopFreekick</a></li><li><a href="global.html#setTopGoalKick">setTopGoalKick</a></li><li><a href="global.html#setTopHalfwayToBottomQtrYPos">setTopHalfwayToBottomQtrYPos</a></li><li><a href="global.html#setTopLeftCornerPositions">setTopLeftCornerPositions</a></li><li><a href="global.html#setTopLowerFinalQtrBylinePos">setTopLowerFinalQtrBylinePos</a></li><li><a href="global.html#setTopOneHundredToHalfwayYPos">setTopOneHundredToHalfwayYPos</a></li><li><a href="global.html#setTopOneHundredYPos">setTopOneHundredYPos</a></li><li><a href="global.html#setTopPenalty">setTopPenalty</a></li><li><a href="global.html#setTopRightCornerPositions">setTopRightCornerPositions</a></li><li><a href="global.html#shotMade">shotMade</a></li><li><a href="global.html#splitNumberIntoN">splitNumberIntoN</a></li><li><a href="global.html#startSecondHalf">startSecondHalf</a></li><li><a href="global.html#sumFrom1toX">sumFrom1toX</a></li><li><a href="global.html#switchSide">switchSide</a></li><li><a href="global.html#team1atBottom">team1atBottom</a></li><li><a href="global.html#team1atTop">team1atTop</a></li><li><a href="global.html#thisPlayerIsInProximity">thisPlayerIsInProximity</a></li><li><a href="global.html#throughBall">throughBall</a></li><li><a href="global.html#topTeamPlayerHasBall">topTeamPlayerHasBall</a></li><li><a href="global.html#topTeamPlayerHasBallInBottomPenaltyBox">topTeamPlayerHasBallInBottomPenaltyBox</a></li><li><a href="global.html#upToMax">upToMax</a></li><li><a href="global.html#upToMin">upToMin</a></li><li><a href="global.html#updateInformation">updateInformation</a></li><li><a href="global.html#validateArguments">validateArguments</a></li><li><a href="global.html#validateBall">validateBall</a></li><li><a href="global.html#validateMatchDetails">validateMatchDetails</a></li><li><a href="global.html#validateNumberOfPlayers">validateNumberOfPlayers</a></li><li><a href="global.html#validatePitch">validatePitch</a></li><li><a href="global.html#validatePlayerObjects">validatePlayerObjects</a></li><li><a href="global.html#validatePlayerObjectsIteration">validatePlayerObjectsIteration</a></li><li><a href="global.html#validatePlayerPositions">validatePlayerPositions</a></li><li><a href="global.html#validatePlayerSkills">validatePlayerSkills</a></li><li><a href="global.html#validateStats">validateStats</a></li><li><a href="global.html#validateTeam">validateTeam</a></li><li><a href="global.html#validateTeamSecondHalf">validateTeamSecondHalf</a></li><li><a href="global.html#wasFoul">wasFoul</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 10 2024 13:58:55 GMT+0200 (Ora legale dell’Europa centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

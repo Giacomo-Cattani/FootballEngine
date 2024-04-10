@@ -1,9 +1,6 @@
 # Dependency directories
 /node_modules
 
-# TODO
-TODO.md
-
 # Build output
 /build
 /dist

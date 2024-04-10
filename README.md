@@ -34,7 +34,7 @@ To run the football match simulator, follow these steps:
 
 ## Documentations
 
-[For more documentations about functions](./docs/global.html)
+[For more documentations about functions](https://html-preview.github.io/?url=https://github.com/Giacomo-Cattani/FootballEngine/blob/master/docs/global.html)
 
 
 ## Credits

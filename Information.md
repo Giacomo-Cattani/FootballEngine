@@ -1,5 +1,3 @@
-jsdoc
-
 # Function Documentation
 
 ## Function initiateGame()

@@ -5,6 +5,8 @@
 /build
 /dist
 
+TODO.md
+
 # Environment variables
 .env.local
 .env.development.local

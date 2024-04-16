@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: lib/setVariables.js</title>
+    <title>JSDoc: Source: team.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: lib/setVariables.js</h1>
+    <h1 class="page-title">Source: team.js</h1>
 
     
 
@@ -26,183 +26,42 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { common } from '../lib/common.js'
-
-/**
- * Resets the player positions in the match details object.
- * @function
- * @param {Object} matchDetails - The match details object containing the player positions.
+            <pre class="prettyprint source linenums"><code>/** @typedef {object} json
+ * @property {string} name
+ * @property {number} rating
+ * @property {object[]} players
+ * @property {string} players.name
+ * @property {string} players.position
+ * @property {string} players.rating
+ * @property {object} players.skill
+ * @property {string} players.skill.passing
+ * @property {string} players.skill.shooting
+ * @property {string} players.skill.tackling
+ * @property {string} players.skill.saving
+ * @property {string} players.skill.agility
+ * @property {string} players.skill.strength
+ * @property {string} players.skill.penalty_taking
+ * @property {string} players.skill.jumping
+ * @property {number[]} players.currentPOS
+ * @property {number} players.fitness
+ * @property {boolean} players.injured
+ * @property {object[]} subs
+ * @property {string} subs.name
+ * @property {string} subs.position
+ * @property {string} subs.rating
+ * @property {object} subs.skill
+ * @property {string} subs.skill.passing
+ * @property {string} subs.skill.shooting
+ * @property {string} subs.skill.tackling
+ * @property {string} subs.skill.saving
+ * @property {string} subs.skill.agility
+ * @property {string} subs.skill.strength
+ * @property {string} subs.skill.penalty_taking
+ * @property {string} subs.skill.jumping
+ * @property {number[]} subs.currentPOS
+ * @property {number} subs.fitness
+ * @property {boolean} subs.injured
  */
-function resetPlayerPositions(matchDetails) {
-  for (let player of matchDetails.kickOffTeam.players) {
-    if (player.currentPOS[0] != 'NP') {
-      player.currentPOS = player.originPOS.map(x => x)
-      player.intentPOS = player.originPOS.map(x => x)
-    }
-  }
-  for (let player of matchDetails.secondTeam.players) {
-    if (player.currentPOS[0] != 'NP') {
-      player.currentPOS = player.originPOS.map(x => x)
-      player.intentPOS = player.originPOS.map(x => x)
-    }
-  }
-}
-
-/**
- * Sets game variables for a given team.
- * @function
- * @param {Object} team - The team object.
- * @returns {Object} The updated team object with game variables set.
- */
-function setGameVariables(team) {
-  team.players.forEach(player => {
-    player.playerID = common.getRandomNumber(1000000000000, 99999999999999999)
-    player.originPOS = player.currentPOS.slice()
-    player.intentPOS = player.currentPOS.slice()
-    player.action = `none`
-    player.offside = false
-    player.hasBall = false
-    player.stats = {
-      'goals': 0,
-      'shots': {
-        'total': 0,
-        'on': 0,
-        'off': 0
-      },
-      'cards': {
-        'yellow': 0,
-        'red': 0
-      },
-      'passes': {
-        'total': 0,
-        'on': 0,
-        'off': 0
-      },
-      'tackles': {
-        'total': 0,
-        'on': 0,
-        'off': 0,
-        'fouls': 0
-      }
-    }
-    if (player.position == 'GK') player.stats.saves = 0
-  })
-  team.intent = `none`
-  team.teamID = common.getRandomNumber(1000000000000, 99999999999999999)
-  return team
-}
-
-/**
- * Decides the outcome of a knockout event in a football match.
- * @function
- * @param {Object} team1 - The first team participating in the match.
- * @param {Object} matchDetails - The details of the match.
- * @returns {Object} The updated team1 object after the knockout event.
- */
-function koDecider(team1, matchDetails) {
-  const playerWithBall = common.getRandomNumber(9, 10)
-  matchDetails.ball.withPlayer = true
-  matchDetails.ball.Player = team1.players[playerWithBall].playerID
-  matchDetails.ball.withTeam = team1.teamID
-  team1.intent = `attack`
-  team1.players[playerWithBall].currentPOS = matchDetails.ball.position.map(x => x)
-  team1.players[playerWithBall].intentPOS = matchDetails.ball.position.map(x => x)
-  team1.players[playerWithBall].currentPOS.pop()
-  team1.players[playerWithBall].intentPOS.pop()
-  team1.players[playerWithBall].hasBall = true
-  matchDetails.ball.lastTouch.playerName = team1.players[playerWithBall].name
-  matchDetails.ball.lastTouch.playerID = team1.players[playerWithBall].playerID
-  matchDetails.ball.lastTouch.teamID = team1.teamID
-  matchDetails.ball.ballOverIterations = []
-  let waitingPlayer = playerWithBall == 9 ? 10 : 9
-  team1.players[waitingPlayer].currentPOS = [matchDetails.ball.position[0] + 20, matchDetails.ball.position[1]]
-  team1.players[waitingPlayer].intentPOS = [matchDetails.ball.position[0] + 20, matchDetails.ball.position[1]]
-  return team1
-}
-
-/**
- * Populates the match details object with the provided team and pitch details.
- * @function
- * @param {string} team1 - The name of the first team.
- * @param {string} team2 - The name of the second team.
- * @param {Object} pitchDetails - The details of the pitch.
- * @returns {Object} The populated match details object.
- */
-function populateMatchDetails(team1, team2, pitchDetails) {
-  return {
-    matchID: common.getRandomNumber(1000000000000, 99999999999999999),
-    kickOffTeam: team1,
-    secondTeam: team2,
-    pitchSize: [pitchDetails.pitchWidth, pitchDetails.pitchHeight, pitchDetails.goalWidth],
-    ball: {
-      position: [pitchDetails.pitchWidth / 2, pitchDetails.pitchHeight / 2, 0],
-      withPlayer: true,
-      Player: ``,
-      withTeam: ``,
-      direction: `south`,
-      ballOverIterations: [],
-      lastTouch: {
-        playerName: ``,
-        playerID: ``,
-        teamID: ``
-      }
-    },
-    half: 1,
-    kickOffTeamStatistics: {
-      goals: 0,
-      shots: {
-        'total': 0,
-        'on': 0,
-        'off': 0
-      },
-      corners: 0,
-      freekicks: 0,
-      penalties: 0,
-      fouls: 0
-    },
-    secondTeamStatistics: {
-      goals: 0,
-      shots: {
-        'total': 0,
-        'on': 0,
-        'off': 0
-      },
-      corners: 0,
-      freekicks: 0,
-      penalties: 0,
-      fouls: 0
-    },
-    iterationLog: [],
-    substitutions: {
-      kickOffTeam: {
-        subs: 0,
-        slots: 0
-      },
-      secondTeam: {
-        used: 0,
-        slots: 0
-      }
-    },
-  }
-}
-
-
-/**
- * @module setVariables
- * 
- * @requires `common`
- * 
- * @function `resetPlayerPositions` - Resets the positions of the players.
- * @function `setGameVariables` - Sets the game variables.
- * @function `koDecider` - Decides the knockout winner.
- * @function `populateMatchDetails` - Populates the match details.
- */
-export const setVariables = {
-  resetPlayerPositions,
-  setGameVariables,
-  koDecider,
-  populateMatchDetails
-}
 </code></pre>
         </article>
     </section>
@@ -219,7 +78,7 @@ export const setVariables = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 11 2024 19:46:25 GMT+0200 (Ora legale dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Apr 16 2024 21:13:40 GMT+0200 (Ora legale dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

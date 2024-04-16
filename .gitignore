@@ -5,6 +5,8 @@
 /build
 /dist
 
+# TODO file
+/TODO.md
 !TODO.md
 
 # Environment variables

@@ -1,0 +1,36 @@
+/** @typedef {object} team
+ * @property {string} name
+ * @property {number} rating
+ * @property {object[]} players
+ * @property {string} players.name
+ * @property {string} players.position
+ * @property {string} players.rating
+ * @property {object} players.skill
+ * @property {string} players.skill.passing
+ * @property {string} players.skill.shooting
+ * @property {string} players.skill.tackling
+ * @property {string} players.skill.saving
+ * @property {string} players.skill.agility
+ * @property {string} players.skill.strength
+ * @property {string} players.skill.penalty_taking
+ * @property {string} players.skill.jumping
+ * @property {number[]} players.currentPOS
+ * @property {number} players.fitness
+ * @property {boolean} players.injured
+ * @property {object[]} subs
+ * @property {string} subs.name
+ * @property {string} subs.position
+ * @property {string} subs.rating
+ * @property {object} subs.skill
+ * @property {string} subs.skill.passing
+ * @property {string} subs.skill.shooting
+ * @property {string} subs.skill.tackling
+ * @property {string} subs.skill.saving
+ * @property {string} subs.skill.agility
+ * @property {string} subs.skill.strength
+ * @property {string} subs.skill.penalty_taking
+ * @property {string} subs.skill.jumping
+ * @property {number[]} subs.currentPOS
+ * @property {number} subs.fitness
+ * @property {boolean} subs.injured
+ */

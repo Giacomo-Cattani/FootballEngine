@@ -1,4 +1,4 @@
-/** @typedef {object} json
+/** @typedef {object} matchDetails
  * @property {string} name
  * @property {number} rating
  * @property {object[]} players

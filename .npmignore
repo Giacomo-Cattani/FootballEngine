@@ -1,0 +1,43 @@
+# Ignore development files and directories
+node_modules/
+dist/
+build/
+coverage/
+
+# Ignore configuration files
+*.config.js
+.env
+
+# Ignore version control files
+.git/
+.github/
+.gitignore
+
+# Ignore build artifacts
+*.log
+*.zip
+*.tar.gz
+
+# Ignore documentation files
+docs/
+
+# Ignore test files
+test/
+*.test.js
+
+# Ignore editor and IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore miscellaneous files
+.DS_Store
+Thumbs.db
+
+# Ignore example and JSON files
+example/ 
+json/
+
+# Ignore TODO files
+TODO.md

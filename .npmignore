@@ -10,6 +10,7 @@ coverage/
 
 # Ignore version control files
 .git/
+.github/
 .gitignore
 
 # Ignore build artifacts
@@ -34,4 +35,9 @@ test/
 .DS_Store
 Thumbs.db
 
-docs/ example/ json/
+# Ignore example and JSON files
+example/ 
+json/
+
+# Ignore TODO files
+TODO.md
